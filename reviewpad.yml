@@ -2,3 +2,17 @@ workflows:
   - name: My First Reviewpad Workflow
     run:
       - $addLabel("hello world")
+  - name: Raise Security Awarness
+    run:
+      - if: $containsFilePattern("**/authentication/**")
+        then:
+          - $addLabel("security")
+          # Uncomment the following line only if you've a "Security" team defined in your organization.
+          # - $addTeamsForReview(["Security"])
+          - $addComment("The Security team has been involved because the authentication layer is touched")
+  - name: Merge Protection if Critical-Annoted Code is Touched
+      run:
+        - if: $containsCodeAnnotation("critical") && $getReviewerStatus("my_github_id") != "APPROVED"
+          then:
+            - $addLabel("critical")
+            - $failCheckStatus("An approval from 'my_github_id' is required as a critical piece of code has been touched")

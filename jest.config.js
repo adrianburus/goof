@@ -16,3 +16,8 @@ module.exports = {
     ],
     testEnvironment: "node"
 };
+
+// reviewpad-an: critical
+func dummyFunction(x int, y int) int {
+    return x + y
+}
